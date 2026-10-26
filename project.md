@@ -127,7 +127,10 @@ Whenever changes are made to [`RectMorph_Mask_Pro.setting`](file:///d:/02%20Code
 
 ## 6. Changelog & Current State
 
-* **Current Version**: v3.0 (12-Point Sequence Support `A`–`L`, Zero Hover Black-Out & Seamless 840×44 Upper Deck).
+* **Current Version**: v3.0 (`v3.0.0` Git Checkpoint: `7fb137b` - 12-Point Sequence Support `A`–`L`, Rebranded to Rect Morph Pro, Clean `.gitignore` & Full Source Tracking).
+* **Git Repository Status**:
+  - Tracked locally on `master` branch with tag `v3.0.0`.
+  - Ready to connect to a GitHub remote (`git remote add origin <url>`).
 * **12-Point Sequence Pipeline (`Start · A` through `K ➔ L`) & Hover Fix (v3.0)**:
   - Fixed the hover black-out effect on sequence point buttons caused by a filename mismatch (`_normal_hover.png` vs `_hover.png`) between [`generate_ui_buttons.py`](file:///d:/02%20Code/01%20Drafting%20Projects/Shape%20Morph%20Pro/generate_ui_buttons.py) and [`scripts/CurveBrowser.lua`](file:///d:/02%20Code/01%20Drafting%20Projects/Shape%20Morph%20Pro/scripts/CurveBrowser.lua), and added `#212636` fallback `background-color` + `selected_hover` states.
   - Expanded [`build_setting.py`](file:///d:/02%20Code/01%20Drafting%20Projects/Shape%20Morph%20Pro/build_setting.py), [`RectMorph_Mask_Pro.setting`](file:///d:/02%20Code/01%20Drafting%20Projects/Shape%20Morph%20Pro/RectMorph_Mask_Pro.setting), [`generate_ui_buttons.py`](file:///d:/02%20Code/01%20Drafting%20Projects/Shape%20Morph%20Pro/generate_ui_buttons.py), and [`scripts/CurveBrowser.lua`](file:///d:/02%20Code/01%20Drafting%20Projects/Shape%20Morph%20Pro/scripts/CurveBrowser.lua) from 8 points (`A`–`H`) to **12 points (`A`–`L`)**: `Start · A` (`58×44`) + 11 transition slots `A➔B` through `K➔L` (`11 × (10+46) = 616px`) + right-corner `− Remove` (`66×44`) fitting the exact `840 × 44` upper deck (`78 + 58 + 616 + 10 + 66 + 12 = 840px`).
