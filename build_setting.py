@@ -12,9 +12,10 @@ def generate_setting():
     def_ints = {'B': 1.4, 'C': 1.45, 'D': 1.45, 'E': 1.45, 'F': 1.45, 'G': 1.45, 'H': 1.45, 'I': 1.45, 'J': 1.45, 'K': 1.45, 'L': 1.45}
     def_freqs = {'B': 2.5, 'C': 2.6, 'D': 2.6, 'E': 2.6, 'F': 2.6, 'G': 2.6, 'H': 2.6, 'I': 2.6, 'J': 2.6, 'K': 2.6, 'L': 2.6}
 
-    # Core expression template for Width, Height, Corner
-    def make_expr(prop_suffix, fallback_val):
+    # Core expression template for Width, Height, Corner with clean Keyframe track header
+    def make_expr(prop_suffix, fallback_val, title_name):
         return (
+            f"-- [Rect Morph Pro: Procedural {title_name}]\\n"
             f"(function() local pts = {{}}; local letters = {{'A','B','C','D','E','F','G','H','I','J','K','L'}}; "
             f"local defM = {{0,4,9,8,9,8,9,8,9,8,9,8}}; local defD = {{0,0,0,0,0,0,0,0,0,0,0,0}}; "
             f"for idx = 1, 12 do local L = letters[idx]; "
@@ -129,9 +130,9 @@ def generate_setting():
         '\t\t\t\t\t\tBorderWidth = Input { Value = 0, },',
         '\t\t\t\t\t\tInvert = Input { Value = 0, },',
         '\t\t\t\t\t\tSolid = Input { Value = 1, },',
-        f'\t\t\t\t\t\tWidth = Input {{\n\t\t\t\t\t\t\tValue = 0.22,\n\t\t\t\t\t\t\tExpression = "{make_expr("Width", 0.25)}",\n\t\t\t\t\t\t}},',
-        f'\t\t\t\t\t\tHeight = Input {{\n\t\t\t\t\t\t\tValue = 0.14,\n\t\t\t\t\t\t\tExpression = "{make_expr("Height", 0.25)}",\n\t\t\t\t\t\t}},',
-        f'\t\t\t\t\t\tCornerRadius = Input {{\n\t\t\t\t\t\t\tValue = 0.08,\n\t\t\t\t\t\t\tExpression = "{make_expr("Corner", 0.08)}",\n\t\t\t\t\t\t}},',
+        f'\t\t\t\t\t\tWidth = Input {{\n\t\t\t\t\t\t\tValue = 0.22,\n\t\t\t\t\t\t\tExpression = "{make_expr("Width", 0.25, "Width")}",\n\t\t\t\t\t\t}},',
+        f'\t\t\t\t\t\tHeight = Input {{\n\t\t\t\t\t\t\tValue = 0.14,\n\t\t\t\t\t\t\tExpression = "{make_expr("Height", 0.25, "Height")}",\n\t\t\t\t\t\t}},',
+        f'\t\t\t\t\t\tCornerRadius = Input {{\n\t\t\t\t\t\t\tValue = 0.08,\n\t\t\t\t\t\t\tExpression = "{make_expr("Corner", 0.08, "Corner Radius")}",\n\t\t\t\t\t\t}},',
         '\t\t\t\t\t\tTimelineMarks = Input {\n\t\t\t\t\t\t\tSourceOp = "RectMorphKeyframes",\n\t\t\t\t\t\t\tSource = "Value",\n\t\t\t\t\t\t},',
     ]
 
