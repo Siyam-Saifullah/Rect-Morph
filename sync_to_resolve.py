@@ -28,7 +28,8 @@ def sync_node():
         print("Error: No active Fusion composition found.")
         return False
 
-    setting_file = os.path.abspath('RectMorph_Mask_Pro.setting').replace('\\', '/')
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    setting_file = os.path.join(script_dir, 'RectMorph_Mask_Pro.setting').replace('\\', '/')
     if not os.path.exists(setting_file):
         print(f"Error: {setting_file} does not exist.")
         return False
@@ -51,6 +52,8 @@ def sync_node():
         end
         old:Delete()
     end
+    local oldKf = comp:FindTool("RectMorphKeyframes")
+    if oldKf then oldKf:Delete() end
 
     local path = [[{setting_file}]]
     local tbl = bmd.readfile(path)
@@ -63,6 +66,12 @@ def sync_node():
             end
             for _, inp in ipairs(targets) do
                 inp:ConnectTo(newTool.Mask)
+            end
+            local tgt = comp:FindTool("RectMorphMaskInternal")
+            if tgt then
+                pcall(function() tgt.Width:SetAttrs({{ INPB_PC_Visible = false }}) end)
+                pcall(function() tgt.Height:SetAttrs({{ INPB_PC_Visible = false }}) end)
+                pcall(function() tgt.CornerRadius:SetAttrs({{ INPB_PC_Visible = false }}) end)
             end
             comp:SetActiveTool(newTool)
             print("Successfully replaced RectMorphMaskPro live in comp!")

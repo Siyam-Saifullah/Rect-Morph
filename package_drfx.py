@@ -57,6 +57,15 @@ def package_drfx():
 \t\t\t\t\tViewInfo = OperatorInfo {{ Pos = {{ 0, 65 }} }},
 \t\t\t\t}}
 \t\t\t}}
+\t\t}},
+\t\tRectMorphKeyframes = BezierSpline {{
+\t\t\tSplineColor = {{ Red = 74, Green = 222, Blue = 128 }},
+\t\t\tCtrlWZoom = false,
+\t\t\tNameSet = true,
+\t\t\tKeyFrames = {{
+\t\t\t\t[0] = {{ 1, RH = {{ 15, 1 }}, Flags = {{ Linear = true }} }},
+\t\t\t\t[45] = {{ 2, LH = {{ 30, 2 }}, Flags = {{ Linear = true }} }}
+\t\t\t}}
 \t\t}}
 \t}},
 \tActiveTool = "RectMorphProEffect"
@@ -70,8 +79,8 @@ def package_drfx():
     with zipfile.ZipFile(drfx_path, 'w', compression=zipfile.ZIP_DEFLATED) as z:
         z.writestr('Fusion/Tools/RectMorph Mask Pro.setting', fusion_setting)
         z.writestr('Templates/Fusion/Tools/RectMorph Mask Pro.setting', fusion_setting)
-        z.writestr('Edit/Effects/RectMorph Pro/RectMorph Mask Pro.setting', edit_setting)
-        z.writestr('Templates/Edit/Effects/RectMorph Pro/RectMorph Mask Pro.setting', edit_setting)
+        z.writestr('Edit/Effects/Rect Morph Pro/RectMorph Mask Pro.setting', edit_setting)
+        z.writestr('Templates/Edit/Effects/Rect Morph Pro/RectMorph Mask Pro.setting', edit_setting)
 
     print(f"Packaged {drfx_path} successfully!")
 
