@@ -28,10 +28,37 @@ for _, wName in ipairs({
     end
 end
 
-local assetDir = "d:/02 Code/01 Drafting Projects/Shape Morph Pro/assets/curves/"
-local uiDir = "d:/02 Code/01 Drafting Projects/Shape Morph Pro/assets/ui/"
 local curComp = f_app:GetCurrentComp()
 local WIN_TITLE = "Rect Morph Pro - Curve & Point Sequencer"
+
+-- Locate asset paths: check DaVinci PathMaps, script-relative directory, and dev path fallback
+local assetDir = "d:/02 Code/01 Drafting Projects/Shape Morph Pro/assets/curves/"
+local uiDir = "d:/02 Code/01 Drafting Projects/Shape Morph Pro/assets/ui/"
+
+local function findAssets()
+    local candidates = {
+        curComp and curComp:MapPath("Scripts:/Comp/Rect Morph Pro/assets/"),
+        curComp and curComp:MapPath("Scripts:/Comp/RectMorph Pro/assets/"),
+        curComp and curComp:MapPath("Scripts:/Comp/Shape Morph Pro/assets/"),
+    }
+    local src = debug.getinfo(1, "S").source
+    if src and src:sub(1,1) == "@" then
+        local sPath = src:sub(2)
+        local sDir = sPath:match("(.*[/\\])")
+        if sDir then
+            table.insert(candidates, sDir .. "assets/")
+            table.insert(candidates, sDir .. "../assets/")
+        end
+    end
+    for _, base in ipairs(candidates) do
+        if base and bmd.direxists(base .. "curves") then
+            assetDir = base .. "curves/"
+            uiDir = base .. "ui/"
+            return
+        end
+    end
+end
+findAssets()
 
 -- 10 Easing curves in 2 rows x 5 columns (Linear removed per user preference)
 local curveList = {

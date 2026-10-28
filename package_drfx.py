@@ -75,14 +75,50 @@ def package_drfx():
     print("Edit setting brace counts:", edit_setting.count('{'), edit_setting.count('}'))
     assert edit_setting.count('{') == edit_setting.count('}')
 
-    drfx_path = 'RectMorph_Mask_Pro.drfx'
-    with zipfile.ZipFile(drfx_path, 'w', compression=zipfile.ZIP_DEFLATED) as z:
-        z.writestr('Fusion/Tools/RectMorph Mask Pro.setting', fusion_setting)
-        z.writestr('Templates/Fusion/Tools/RectMorph Mask Pro.setting', fusion_setting)
-        z.writestr('Edit/Effects/Rect Morph Pro/RectMorph Mask Pro.setting', edit_setting)
-        z.writestr('Templates/Edit/Effects/Rect Morph Pro/RectMorph Mask Pro.setting', edit_setting)
+    # Read CurveBrowser.lua script
+    curve_script_path = os.path.join('scripts', 'CurveBrowser.lua')
+    with open(curve_script_path, 'r', encoding='utf-8') as f:
+        curve_script = f.read()
 
-    print(f"Packaged {drfx_path} successfully!")
+    # Collect asset files
+    assets_to_package = []
+    assets_dir = 'assets'
+    for root, _, files in os.walk(assets_dir):
+        for file in files:
+            full_path = os.path.join(root, file)
+            rel_path = os.path.relpath(full_path, assets_dir).replace('\\', '/')
+            assets_to_package.append((full_path, rel_path))
+
+    # Output bundle filenames
+    bundle_names = ['Rect_Morph_Pro.drfx', 'RectMorph_Mask_Pro.drfx']
+
+    for drfx_path in bundle_names:
+        with zipfile.ZipFile(drfx_path, 'w', compression=zipfile.ZIP_DEFLATED) as z:
+            # 1. Fusion Tools
+            z.writestr('Fusion/Tools/Rect Morph Pro/Rect Morph Pro.setting', fusion_setting)
+            z.writestr('Templates/Fusion/Tools/Rect Morph Pro/Rect Morph Pro.setting', fusion_setting)
+            z.writestr('Fusion/Tools/Rect Morph Pro/RectMorph Mask Pro.setting', fusion_setting)
+            z.writestr('Templates/Fusion/Tools/Rect Morph Pro/RectMorph Mask Pro.setting', fusion_setting)
+
+            # 2. Edit Page Effects
+            z.writestr('Edit/Effects/Rect Morph Pro/Rect Morph Pro.setting', edit_setting)
+            z.writestr('Templates/Edit/Effects/Rect Morph Pro/Rect Morph Pro.setting', edit_setting)
+            z.writestr('Edit/Effects/Rect Morph Pro/RectMorph Mask Pro.setting', edit_setting)
+            z.writestr('Templates/Edit/Effects/Rect Morph Pro/RectMorph Mask Pro.setting', edit_setting)
+
+            # 3. Scripts
+            z.writestr('Scripts/Comp/Rect Morph Pro/Curve Browser.lua', curve_script)
+            z.writestr('Scripts/Comp/RectMorph Pro/Curve Browser.lua', curve_script)
+
+            # 4. Assets (curves and ui slices)
+            for full_p, rel_p in assets_to_package:
+                with open(full_p, 'rb') as af:
+                    content = af.read()
+                    z.writestr(f'Scripts/Comp/Rect Morph Pro/assets/{rel_p}', content)
+                    z.writestr(f'Scripts/Comp/RectMorph Pro/assets/{rel_p}', content)
+
+        size_kb = os.path.getsize(drfx_path) / 1024
+        print(f"Packaged {drfx_path} successfully! ({size_kb:.1f} KB)")
 
 if __name__ == '__main__':
     package_drfx()
